@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+      <div class="p-3 mb-2 bg-secondary text-white text-center" >
+
+         <section class="section">
+             <h2>{{product.name}}</h2>
+              <p>{{ product.description }}</p>
+         <p >{{product.price}} {{product.currency}}</p>
+         <div class="container">
+          <button class="button is-primary" id="buy-button">Buy</button>
+         </div>
+
+
+         </section>
+        </div>
+
+
+
+
+
+<script type="text/javascript">
+        fetch("{% url 'payments:config' product.currency %}")
+        .then((result) => { return result.json(); })
+        .then((data) => {
+            const stripe = Stripe(data.publicKey);
+            var buyButton = document.getElementById('buy-button')
+            buyButton.addEventListener("click", () => {
+                fetch("{% url 'payments:create-checkout-session' product.id %}", {method: 'GET'})
+                .then((result) => { return result.json(); })
+                .then((data) => {
+                    return stripe.redirectToCheckout({sessionId: data.sessionId})
+            })
+        });
+    });
+    </script>
+{% endblock content %}

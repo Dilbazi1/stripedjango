@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-3 mb-2 bg-secondary text-white text-center">
+        {% for product in products %}
+            <h1>{{ product }}</h1>
+            <p>{{ product.price }} {{ product.currency }} </p>
+
+        <div class="container">
+          <button class="button is-primary" id="submitBtn"><a href="{% url 'payments:product' product.id %}">Detail</a></button>
+         </div>
+
+        {% endfor %}
+    </div>
+{% endblock%}
